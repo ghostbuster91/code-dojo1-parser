@@ -27,12 +27,27 @@ yyyy
 	it('should not indent first line', () => {
 		const input =
 `15
-VAL
-`
+xxxx
+VAL`
 		assert.equal(parse(input).output, 'VAL')
+	})
+	it('should support multilines', () => {
+		const input =
+`15
+xxxx
+VAL
+VAR
+`
+		const expected = 
+`VAL
+VAR
+`
+		assert.equal(parse(input).output, expected)
 	})
 })
 
 function parse(input) {
-	return {lines: input.split('\n')[0], indentation: input.split('\n')[1], output: 'VAL'}
+	const lines = input.split('\n')
+	const output = lines.slice(2).map((elem) => elem.trim()).join('\n')
+	return {lines: lines[0], indentation: lines[1], output: output}
 }
